@@ -20,11 +20,10 @@ X = X.astype('float')
 Y = Y.astype('float')
 X[:, 0] += np.random.normal(size=X[:, 0].shape) * 3  # 添加 0,1 高斯噪声
 Y = Y.reshape(100, 1)
-from my_models.linear_model import linear_regression
-
+from my_models.linear_model.linear_regression import *
 # 测试
 # lr = LinearRegression(solver='sgd')
-lr = linear_regression.LinearRegression(solver='closed_form')
+lr = LinearRegression(solver='closed_form')
 lr.fit(X[:, :-1], Y)
 predict = lr.predict(X[:, :-1])
 # 查看 w

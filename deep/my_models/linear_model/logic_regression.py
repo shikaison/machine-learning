@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from my_models.utils import utils
+from my_models.math_function import utils
 
 
 class LogisticRegression(object):
@@ -40,18 +40,18 @@ class LogisticRegression(object):
         count = 0
         for _ in range(self.epochs):
             np.random.shuffle(x_y)
-        for index in range(x_y.shape[0] // self.batch_size):
-            count += 1
-            batch_x_y = x_y[self.batch_size * index:self.batch_size * (index + 1)]
-            batch_x = batch_x_y[:, :-1]
-            batch_y = batch_x_y[:, -1:]
-            dw = -1 * (batch_y - utils.sigmoid(batch_x.dot(self.w))).T.dot(batch_x) / self.batch_size
-            dw = dw.T
-            self.w = self.w - self.eta * dw
-        # 计算 losses
-        cost = -1 * np.sum(
-        np.multiply(y, np.log(utils.sigmoid(x.dot(self.w)))) + np.multiply(1 - y, np.log(1 - utils.sigmoid(x.dot(self.w)))))
-        self.losses.append(cost)
+            for index in range(x_y.shape[0] // self.batch_size):
+                count += 1
+                batch_x_y = x_y[self.batch_size * index:self.batch_size * (index + 1)]
+                batch_x = batch_x_y[:, :-1]
+                batch_y = batch_x_y[:, -1:]
+                dw = -1 * (batch_y - utils.sigmoid(batch_x.dot(self.w))).T.dot(batch_x) / self.batch_size
+                dw = dw.T
+                self.w = self.w - self.eta * dw
+            # 计算 losses
+            cost = -1 * np.sum(np.multiply(y, np.log(utils.sigmoid(x.dot(self.w)))) + np.multiply(1 - y, np.log(
+                1 - utils.sigmoid(x.dot(self.w)))))
+            self.losses.append(cost)
 
     def fit(self, x, y):
         """
@@ -75,6 +75,7 @@ class LogisticRegression(object):
             self.eta = self.batch_size / np.sqrt(x.shape[0])
         if self.solver == 'sgd':
             self._fit_sgd(x, y)
+
     def get_params(self):
         """
         输出原始的系数
@@ -90,6 +91,7 @@ class LogisticRegression(object):
             w = w / self.feature_std.reshape(-1, 1)
             b = b - w.T.dot(self.feature_mean.reshape(-1, 1))
         return w.reshape(-1), b
+
     def predict_proba(self, x):
         """
         预测为 y=1 的概率
