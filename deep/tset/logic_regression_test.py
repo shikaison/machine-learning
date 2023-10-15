@@ -27,3 +27,22 @@ lr.plot_decision_boundary(data, target)
 from sklearn.metrics import f1_score
 
 f1_score(target, lr.predict(data))
+
+# 与sklearn 中的逻辑回归对比
+from sklearn.linear_model import LogisticRegression
+lr = LogisticRegression()
+lr.fit(data, target)
+w1=lr.coef_[0][0]
+w2=lr.coef_[0][1]
+bias=lr.intercept_[0]
+print(w1)
+print(w2)
+print(bias)
+#画决策边界
+x1=np.arange(np.min(data),np.max(data),0.1)
+x2=-w1/w2*x1-bias/w2
+plt.scatter(data[:, 0], data[:, 1], c=target,s=50)
+plt.plot(x1,x2,'r')
+plt.show()
+#计算 F1
+f1_score(target,lr.predict(data))

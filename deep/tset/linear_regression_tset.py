@@ -35,3 +35,18 @@ lr.plot_fit_boundary(X[:, :-1], Y)  # 预测的拟合直线
 plt.plot(np.arange(0, 100).reshape((100, 1)), Y, c='b', linestyle='--')
 # 真实直线
 plt.show()  # 可视化显示
+
+#与 sklearn 对比
+from sklearn.linear_model import LinearRegression
+lr=LinearRegression()
+lr.fit(X[:,:-1],Y)
+predict=lr.predict(X[:,:-1])
+#查看 w,b
+print('w:',lr.coef_,'b:',lr.intercept_)
+#查看标准差
+print(np.std(Y-predict))
+#可视化结果
+plt.scatter(X[:, 0], Y)
+plt.plot(X[:, 0], predict, 'r')
+plt.plot(np.arange(0,100).reshape((100,1)),Y, c='b', linestyle='--')
+plt.show()
