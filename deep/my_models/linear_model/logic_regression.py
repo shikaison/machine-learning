@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from my_models.math_function import utils
+from my_models import utils
 
 
 class LogisticRegression(object):

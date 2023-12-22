@@ -11,42 +11,34 @@ import os
 curPath = os.path.abspath(os.path.dirname(__file__))
 rootPath = os.path.split(curPath)[0]
 sys.path.append(rootPath)
-# 造伪样本
-X = np.linspace(0, 100, 100)
-X = np.c_[X, np.ones(100)]  # 考虑到偏置 b
+# # 造伪样本
+# X = np.linspace(0, 100, 100)
+X = [207, 187, 187, 170, 194, 240, 257, 184, 257]
 w = np.asarray([3, 2])  # 参数
+X = np.c_[X, np.ones(9)]  # 考虑到偏置 b
 Y = X.dot(w)
+Y = [10.4, 9.4, 9.4, 8.7, 11.2, 12.7, 13, 11.2, 13]
 X = X.astype('float')
 Y = Y.astype('float')
 X[:, 0] += np.random.normal(size=X[:, 0].shape) * 3  # 添加 0,1 高斯噪声
-Y = Y.reshape(100, 1)
-from my_models.linear_model.linear_regression import *
-# 测试
-# lr = LinearRegression(solver='sgd')
-lr = LinearRegression(solver='closed_form')
-lr.fit(X[:, :-1], Y)
-predict = lr.predict(X[:, :-1])
-# 查看 w
-print('w', lr.get_params())
-# 查看标准差，如果标准差小的话则认为真实值与预测值相符合。
-print(np.std(Y - predict))
-# 可视化结果
-lr.plot_fit_boundary(X[:, :-1], Y)  # 预测的拟合直线
-plt.plot(np.arange(0, 100).reshape((100, 1)), Y, c='b', linestyle='--')
-# 真实直线
-plt.show()  # 可视化显示
 
-#与 sklearn 对比
+Y = Y.reshape(9, 1)
+
+# X = [207, 187, 187, 170, 194, 240, 257, 184, 257]
+# X = np.c_[X, np.ones(100)]  # 考虑到偏置 b
+# Y = [10.4, 9.4, 9.4, 8.7, 11.2, 12.7, 13, 11.2, 13]
+# 与 sklearn 对比
 from sklearn.linear_model import LinearRegression
-lr=LinearRegression()
-lr.fit(X[:,:-1],Y)
-predict=lr.predict(X[:,:-1])
-#查看 w,b
-print('w:',lr.coef_,'b:',lr.intercept_)
-#查看标准差
-print(np.std(Y-predict))
-#可视化结果
+
+lr = LinearRegression()
+lr.fit(X, Y)
+# predict = lr.predict(X[:, :-1])
+# 查看 w,b
+print('w:', lr.coef_, 'b:', lr.intercept_)
+# 查看标准差
+# print(np.std(Y - predict))
+# 可视化结果
 plt.scatter(X[:, 0], Y)
-plt.plot(X[:, 0], predict, 'r')
-plt.plot(np.arange(0,100).reshape((100,1)),Y, c='b', linestyle='--')
+# plt.plot(X[:, 0], predict, 'r')
+# plt.plot(np.arange(0, 100).reshape((100, 1)), Y, c='b', linestyle='--')
 plt.show()
